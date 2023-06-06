@@ -33,9 +33,13 @@ async function connectDB(data){
         if(status){
             console.log('------------------------------')
             console.log('connected to database!')
-            await doOperation(data.first)
-            await doOperation(data.second)
-            return await doOperation(data.third)
+            if(data.first){
+                await doOperation(data.first)
+                await doOperation(data.second)
+                return await doOperation(data.third)
+            }else{
+                return await doOperation(data.action)
+            }
         } 
     } catch (error) { 
         console.log('failed to connect to database : ',error)

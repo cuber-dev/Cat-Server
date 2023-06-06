@@ -21,6 +21,19 @@ app.get('/',(req,res) => {
     res.send("server is runnin on port ",port)
 })
 
+app.get('/get-votes' ,async (req,res) => {
+    const response = await connectDB({
+        action : 'read'
+    })
+    const votes = getVotes(response)
+    res.json({  
+        accepted : true,
+        cat,
+        votes,
+        message : response.message
+    })           
+            
+})
 
 app.post('/api/v1/voters',async (req,res) => {
     const { cat } = req.body
