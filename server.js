@@ -18,7 +18,7 @@ app.use(cors({
 }))
 
 app.get('/',(req,res) => {
-    res.send("Hai this is cat-server")
+    res.send("server is runnin on port ",port)
 })
 
 
@@ -78,6 +78,3 @@ app.get('*',(req,res) => {
 app.listen(port,() => {
     console.log(`Server is running on port ${port}`)
 })
-
-const serverIP = process.env.RENDER_EXTERNAL_IP;
-console.log('Server IP:', serverIP);

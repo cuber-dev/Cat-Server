@@ -25,6 +25,7 @@ const getVotes = (data) => {
         cat4 : {
             percent : `${((filtered.cat4 / filtered.totalCatVotes) * 100).toFixed(2)}%`
         },
+        totalCatVotes : filtered.totalCatVotes
     }
     
     return votes
