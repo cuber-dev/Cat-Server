@@ -18,7 +18,7 @@ app.use(cors({
 }))
 
 app.get('/',(req,res) => {
-    res.send("server is runnin on port ",port)
+    res.status(200).send("server is runnin on port ",port)
 })
 
 app.get('/get-votes' ,async (req,res) => {
