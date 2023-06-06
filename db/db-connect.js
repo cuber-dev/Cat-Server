@@ -30,15 +30,17 @@ async function connectDB(data){
         const status = await mongoose.connect(process.env.DATABASE_URI, {
             useNewUrlParser: true,
         }) 
-        if(status){
+        if(status){  
             console.log('------------------------------')
             console.log('connected to database!')
             if(data.first){
+                console.log('new voter')
                 await doOperation(data.first)
                 await doOperation(data.second)
                 return await doOperation(data.third)
             }else{
-                return await doOperation(data.action)
+                console.log('existing voter')
+                return await doOperation(data)
             }
         } 
     } catch (error) { 

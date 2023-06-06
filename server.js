@@ -18,20 +18,23 @@ app.use(cors({
 }))
 
 app.get('/',(req,res) => {
-    res.status(200).send("server is runnin on port ",port)
+    res.status(200).send({
+        msg : `server is runnin on port ${port}`
+    })
 })
 
 app.get('/get-votes' ,async (req,res) => {
     const response = await connectDB({
         action : 'read'
     })
-    const votes = getVotes(response)
-    res.json({  
-        accepted : true,
-        cat,
-        votes,
-        message : response.message
-    })           
+    if(response){
+        const votes = getVotes(response)
+        res.json({  
+            accepted : true,
+            votes,
+            message : response.message
+        })
+    }           
             
 })
 
