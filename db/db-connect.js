@@ -38,7 +38,7 @@ async function connectDB(data){
             return await doOperation(data.third)
         } 
     } catch (error) { 
-        console.log('failed to connect to database')
+        console.log('failed to connect to database : ',error)
         return "Internal Server , Failed to connnect-to-db (500)"
     }finally{
         mongoose.disconnect()
