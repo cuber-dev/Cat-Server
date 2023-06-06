@@ -17,6 +17,9 @@ app.use(cors({
     credentials : true
 }))
 
+app.get('/',(req,res) => {
+    res.send("Hai this is cat-server")
+})
 
 
 app.post('/api/v1/voters',async (req,res) => {
