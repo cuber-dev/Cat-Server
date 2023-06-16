@@ -2,7 +2,6 @@
 
 
 async function updateOne(collection,{ query , action}) {
-    console.log(query);
     try {
       const result = await collection.updateOne(query.filter, query.update);
       console.log(action)
