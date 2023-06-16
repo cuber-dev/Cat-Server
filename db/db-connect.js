@@ -2,7 +2,6 @@ require('dotenv').config()
 const { updateOne , read } = require('./controllers/controller')
 const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb+srv://cuber-dev:testing1234@cluster0.wgkepzu.mongodb.net/'
 const dbName = 'appdb';
 const collectionName = 'catsCl';
 
@@ -29,7 +28,7 @@ async function connectDB(data) {
     }else{
         console.log('existing voter')
         return await read(collection,data)
-    }               
+    }                
   } catch (error) {
     console.log('Failed to connect to the database:', error);
   }finally{
@@ -38,7 +37,7 @@ async function connectDB(data) {
 }
 
 async function closeDB() {
-  if (client) {
+  if (client.close) {
     await client.close();
     
     console.log('Disconnected from the database');

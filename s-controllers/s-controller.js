@@ -1,37 +1,35 @@
 
-const filter = (data) => {
-    const filtered = {
-        totalCatVotes : data[0].totalCatVotes,
-        cat1 : data[1].votes,
-        cat2 : data[2].votes,
-        cat3 : data[3].votes,
-        cat4 : data[4].votes,
-    }
-    return filtered 
-}
-const getVotes = (data) => { 
-    const { result } = data
-    const filtered = filter(result)
-    const votes = {
-        cat1 : {
-            percent : `${((filtered.cat1 / filtered.totalCatVotes) * 100).toFixed(2)}%`
-        },
-        cat2 : {
-            percent : `${((filtered.cat2 / filtered.totalCatVotes) * 100).toFixed(2)}%`
-        },
-        cat3 : {
-            percent : `${((filtered.cat3 / filtered.totalCatVotes) * 100).toFixed(2)}%`
-        },
-        cat4 : {
-            percent : `${((filtered.cat4 / filtered.totalCatVotes) * 100).toFixed(2)}%`
-        },
-        totalCatVotes : filtered.totalCatVotes
-    }
-    
-    return votes
+const getPercentage = (from,total) => {
+    return `${((from / total) * 100).toFixed(2)}%`
 }
 
+const filter = (data) => {
+    const total = new Intl.NumberFormat('en-US', {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }).format(data[0].totalCatVotes)
+    const votes = [  
+        { cat1 : getPercentage(data[1].votes,data[0].totalCatVotes) }, 
+        { cat2 : getPercentage(data[2].votes,data[0].totalCatVotes) },
+        { cat3 : getPercentage(data[3].votes,data[0].totalCatVotes) },
+        { cat4 : getPercentage(data[4].votes,data[0].totalCatVotes) },
+    ]
+    return { total , votes } 
+}
+
+const getJsonResponse = (response) => {
+    const { total , votes } = filter(response.result)
+    const json = {   
+            accepted : true,
+            total,
+            votes, 
+            message : response.message
+        }
+    console.log(json)
+    return json     
+}
+ 
 
 module.exports = {
-    getVotes
+    getJsonResponse
 }

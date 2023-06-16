@@ -2,7 +2,7 @@
 const cors = require('cors')
 const express = require('express')
 const { connectDB } = require('./db/db-connect')
-const { getVotes } = require('./s-controllers/s-controller')
+const { getJsonResponse } = require('./s-controllers/s-controller')
 
 // intialization's
 const app = express()
@@ -28,12 +28,7 @@ app.get('/get-votes' ,async (req,res) => {
         action : 'read'
     })
     if(response){
-        const votes = getVotes(response)
-        res.json({  
-            accepted : true,
-            votes,
-            message : response.message
-        })
+        res.json(getJsonResponse(response))
     }else{
         console.log('internal server error 500')
         res.status(500).json({  
@@ -43,7 +38,7 @@ app.get('/get-votes' ,async (req,res) => {
     }           
             
 })
-
+   
 app.post('/api/v1/voters',async (req,res) => {
     const { cat } = req.body
     console.log(cat)
@@ -76,14 +71,7 @@ app.post('/api/v1/voters',async (req,res) => {
                     action : 'read'  
                 }
             })
-            const votes = getVotes(response)
-                
-            res.json({  
-                accepted : true,
-                cat,
-                votes,
-                message : response.message
-            })
+            res.json(getJsonResponse(response))
     } catch (error) {
         console.log(error)
         res.status(500).json({
