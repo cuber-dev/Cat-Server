@@ -23,12 +23,12 @@ async function connectDB(data) {
     
     if(data.first){
         console.log('new voter')
-        await updateOne(data.first)
-        await updateOne(data.second)
-        return await read(data.third)
+        await updateOne(collection,data.first)
+        await updateOne(collection,data.second)
+        return await read(collection,data.third)
     }else{
         console.log('existing voter')
-        return await read(data)
+        return await read(collection,data)
     }               
   } catch (error) {
     console.log('Failed to connect to the database:', error);
