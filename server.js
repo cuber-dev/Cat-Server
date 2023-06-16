@@ -35,6 +35,7 @@ app.get('/get-votes' ,async (req,res) => {
             message : response.message
         })
     }else{
+        console.log('internal server error 500')
         res.status(500).json({  
             accepted : true,
             message : 'Internel server error while doing read action (500)'

@@ -1,56 +1,51 @@
 require('dotenv').config()
+const { updateOne , read } = require('./controllers/controller')
+const { MongoClient } = require('mongodb');
 
-const mongoose = require('mongoose')
-const controller = require('./controllers/controller')
-const db = {  collection : controller }
- 
- 
-async function doOperation(data){
-    try {
-        const { action , query } = data
-        switch(action){
-            case 'update-one':
-                await db.collection.updateOne(query)
-                console.log('updated one')
-                break
-            case 'read':
-                console.log('read')
-                return await db.collection.read()
-            default :
-                return { message : "Invalid Action"}
-        }
-    } catch (error) {
-        console.log(error)
-        return { message : `Internal Server Error , failed to do ${action} action`}
-    }
+const uri = 'mongodb+srv://cuber-dev:testing1234@cluster0.wgkepzu.mongodb.net/'
+const dbName = 'appdb';
+const collectionName = 'catsCl';
+
+let client;
+let db;
+let collection
+async function connectDB(data) {
+  try {
+    client = await MongoClient.connect(process.env.DATABASE_URI, {
+      useNewUrlParser: true
+    });
+
+    db = client.db(dbName);
+    collection = db.collection(collectionName)
+    
+    console.log('-----------------------------')
+    console.log('Connected to the database!');
+    
+    if(data.first){
+        console.log('new voter')
+        await updateOne(data.first)
+        await updateOne(data.second)
+        return await read(data.third)
+    }else{
+        console.log('existing voter')
+        return await read(data)
+    }               
+  } catch (error) {
+    console.log('Failed to connect to the database:', error);
+  }finally{
+    closeDB()
+  }
 }
 
-async function connectDB(data){
-    try {
-        const status = await mongoose.connect(process.env.DATABASE_URI, {
-            useNewUrlParser: true,
-        }) 
-        if(status){  
-            console.log('------------------------------')
-            console.log('connected to database!')
-            if(data.first){
-                console.log('new voter')
-                await doOperation(data.first)
-                await doOperation(data.second)
-                return await doOperation(data.third)
-            }else{
-                console.log('existing voter')
-                return await doOperation(data)
-            }
-        } 
-    } catch (error) { 
-        console.log('failed to connect to database : ',error)
-        return "Internal Server , Failed to connnect-to-db (500)"
-    }finally{
-        mongoose.disconnect()
-        console.log('disconnected from database')
-        console.log('------------------------------')
-    }
+async function closeDB() {
+  if (client) {
+    await client.close();
+    
+    console.log('Disconnected from the database');
+    console.log('-----------------------------')
+  }
 }
 
-module.exports = { connectDB }
+module.exports = {
+  connectDB,
+};
