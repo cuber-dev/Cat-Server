@@ -3,7 +3,7 @@
 
 async function updateOne(collection,query) {
     try {
-      const result = await collection.updateOne(query.filter, { $set: query.update });
+      const result = await collection.updateOne(query.filter, query.update);
       console.log('updateOne')
       return { message: 'updateOne action successful' };
     } catch (error) {
